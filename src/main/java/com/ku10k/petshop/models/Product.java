@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table(name ="products")
 @Data
-@AllArgsConstructor
 public class Product {
     @Id
     @Column(name="id",unique = true ,updatable = false)
@@ -22,7 +21,4 @@ public class Product {
     @Column(name="name_product")
     private String nameProduct;
 
-    public Product() {
-
-    }
 }
