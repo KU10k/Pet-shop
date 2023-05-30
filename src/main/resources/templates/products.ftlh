@@ -6,7 +6,7 @@
 <body>
 <h2>Pet-Shop</h2>
 <form method="get" action="/search">
-    Поиск <input type="text" name="search_request">
+    Поиск <input type="text" name="title">
     <button type="submit">Поиск</button>
 </form>
 <#list  products as product>

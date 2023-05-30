@@ -24,7 +24,10 @@ public class ProductService {
         productRepository.save(product);
     }
 
-
+    public List<Product> findByTitle(String title) {
+        log.info("get title products");
+        return productRepository.findByTitle(title);
+    }
 
 }
 

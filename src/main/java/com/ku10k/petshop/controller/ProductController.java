@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -27,6 +26,13 @@ public class ProductController {
     public String save(@ModelAttribute Product product) {
         productService.save(product);
         return "redirect:/";
+    }
+
+   @GetMapping("/search")
+    public String getTitles(@ModelAttribute("title") String title,Model model) {
+        List<Product> productList = productService.findByTitle(title);
+        model.addAttribute("title",productList);
+        return "title";
     }
 }
 
