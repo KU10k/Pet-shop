@@ -5,8 +5,8 @@
 </head>
 <body>
 <h2>Pet-Shop</h2>
-<form method="get" action="/search">
-    Поиск <input type="text" name="title">
+<form method="get" action="/">
+    Поиск <input type="text" name="title" value="${title?if_exists}">
     <button type="submit">Поиск</button>
 </form>
 <#list  products as product>

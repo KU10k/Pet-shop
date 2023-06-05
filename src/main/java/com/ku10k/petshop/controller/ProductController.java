@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -17,8 +18,12 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public String products(Model model) {
-        model.addAttribute("products", productService.getAll());
+    public String products(@RequestParam(value = "title", required = false) String searchRequest, Model model) {
+        if (searchRequest == null) model.addAttribute("products", productService.getAll());
+        else {
+            model.addAttribute("title",searchRequest);
+            model.addAttribute("products", productService.searchByTitle(searchRequest));
+        }
         return "products";
     }
 
@@ -28,12 +33,12 @@ public class ProductController {
         return "redirect:/";
     }
 
-   @GetMapping("/search")
-    public String getTitles(@ModelAttribute("title") String title,Model model) {
-        List<Product> productList = productService.findByTitle(title);
-        model.addAttribute("title",productList);
-        return "title";
-    }
+
 }
 
-
+//   @GetMapping("/search")
+//    public String getTitles(@RequestParam("title") String title, Model model) {
+//        List<Product> productList = productService.findByTitle(title);
+//        model.addAttribute("title",productList);
+//        return "title";
+//    }
