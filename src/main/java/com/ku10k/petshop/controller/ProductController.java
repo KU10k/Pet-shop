@@ -2,37 +2,45 @@ package com.ku10k.petshop.controller;
 
 import com.ku10k.petshop.models.Product;
 import com.ku10k.petshop.service.ProductService;
-import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 @Controller
-@RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public String products(@RequestParam(value = "title", required = false) String searchRequest, Model model) {
         if (searchRequest == null) model.addAttribute("products", productService.getAll());
         else {
-            model.addAttribute("title",searchRequest);
+            model.addAttribute("title", searchRequest);
             model.addAttribute("products", productService.searchByTitle(searchRequest));
+
         }
         return "products";
     }
 
-    @PostMapping
-    public String save(@ModelAttribute Product product) {
-        productService.save(product);
-        return "redirect:/";
+    @GetMapping("/{id}")
+    public String productInfo(@PathVariable("id") Long id, Model model) {
+        model.addAttribute(productService.getById(id));
+        return "product-info";
+
     }
 
+    @PostMapping("/")
+    public String save( Product product ,@RequestParam("image-file") MultipartFile image) throws IOException {
+        productService.save(product, image);
+        return "redirect:/";
+    }
 
 }
 

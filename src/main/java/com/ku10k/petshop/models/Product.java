@@ -21,4 +21,12 @@ public class Product {
     @Column(name="name_product")
     private String nameProduct;
 
+    @JoinColumn(name = "image_id")
+    @OneToOne(cascade =CascadeType.ALL)
+    private Image image;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
