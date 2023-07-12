@@ -3,23 +3,14 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <style type="text/css">
-            .product:hover {
-                transition: 0.5s;
-                transform: scale(1.02);
-            }
+        <link rel="stylesheet" href="/static/style.css">
 
-            .product-link {
-                color: #000 !important;
-                text-decoration: none
-            }
-        </style>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
               integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
               crossorigin="anonymous">
-        <title>Pet-Shop</title>
+        <title>Pet Shop</title>
     </head>
     <body>
     <@n.navbar/>

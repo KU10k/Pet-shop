@@ -1,8 +1,12 @@
 package com.ku10k.petshop.controller;
 
+import com.ku10k.petshop.controller.utils.ControllerUtils;
 import com.ku10k.petshop.models.Product;
+import com.ku10k.petshop.models.User;
 import com.ku10k.petshop.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,42 +15,46 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Controller
+@RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
-    @GetMapping
-    public String products(@RequestParam(value = "title", required = false) String searchRequest, Model model) {
-        if (searchRequest == null) model.addAttribute("products", productService.getAll());
-        else {
-            model.addAttribute("title", searchRequest);
-            model.addAttribute("products", productService.searchByTitle(searchRequest));
 
-        }
+    @GetMapping("/")
+    public String products(@RequestParam(required = false, defaultValue = "") String searchCity,
+                           @RequestParam(required = false, defaultValue = "") String searchWord, Model model) {
+        model.addAttribute("cities", ControllerUtils.getAllTowns());
+        model.addAttribute("searchWord", searchWord);
+        model.addAttribute("searchCity", searchCity);
+        model.addAttribute("products", productService.getAllProducts(searchCity, searchWord));
         return "products";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/product/{id}")
     public String productInfo(@PathVariable("id") Long id, Model model) {
         model.addAttribute(productService.getById(id));
         return "product-info";
-
+    }
+    @GetMapping("/my/products")
+    public String myProducts(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("cities", ControllerUtils.getAllTowns());
+        model.addAttribute("products", productService.getProductsByUserId(user.getId()));
+        return "my-products";
     }
 
     @PostMapping("/")
-    public String save( Product product ,@RequestParam("image-file") MultipartFile image) throws IOException {
-        productService.save(product, image);
-        return "redirect:/";
+    public String save(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile image, Product product) throws IOException {
+        productService.save(user, product, image);
+        return "redirect:/my/products";
+    }
+
+    @PostMapping("/product/delete/{id}")
+    public String delete(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
+        productService.delete(id, user);
+        return "redirect:/my/products";
     }
 
 }
 
-//   @GetMapping("/search")
-//    public String getTitles(@RequestParam("title") String title, Model model) {
-//        List<Product> productList = productService.findByTitle(title);
-//        model.addAttribute("title",productList);
-//        return "title";
-//    }
+

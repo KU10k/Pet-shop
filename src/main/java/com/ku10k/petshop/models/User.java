@@ -1,6 +1,7 @@
 package com.ku10k.petshop.models;
 
 import com.ku10k.petshop.models.enums.Role;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,6 +10,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User implements UserDetails {
 
     @Id
@@ -16,18 +18,16 @@ public class User implements UserDetails {
     @Column(name = "id", updatable = false, unique = true)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "nickName")
+    private String nickName;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "phoneNumber")
+    private int phoneNumber;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image avatar;
 
-    @Column(name = "username", unique = true, updatable = false)
-    private String username;
 
     @Column(name = "email", unique = true, updatable = false)
     private String email;
@@ -43,21 +43,19 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,
             mappedBy = "user")
     private List<Product> products = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
@@ -83,75 +81,5 @@ public class User implements UserDetails {
         return email;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Image getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Image avatar) {
-        this.avatar = avatar;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 }

@@ -20,6 +20,8 @@
             <button type="submit" style="width: 100%" class="btn btn-dark">Войти</button>
         </form>
     </div>
-    <h2>Нет аккаунта BUYSELL? <a href="/registration">Зарегистрируйся!</a></h2>
+    <br>
+    <br>
+      <button type="button" class="btn btn-dark" onclick="window.location.href = '/registration'">Зарегистрируйся!</button>
 
 </@c.page>

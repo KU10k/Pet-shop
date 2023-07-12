@@ -3,17 +3,14 @@
     <h1 style="text-align: center">Регистрация</h1>
     <hr>
     <form action="/registration" method="post">
+
         <div class="form-group">
-            <label for="username">Имя пользователя</label>
-            <input type="text" class="form-control" id="username" name="username">
+            <label for="name">Никнайм</label>
+            <input type="text" class="form-control" id="nickName" name="nickName">
         </div>
         <div class="form-group">
-            <label for="name">Имя</label>
-            <input type="text" class="form-control" id="name" name="name">
-        </div>
-        <div class="form-group">
-            <label for="surname">Фамилия</label>
-            <input type="text" class="form-control" id="surname" name="surname">
+            <label for="surname">Номер Телефона</label>
+            <input type="number" class="form-control" id="phone_number" name="phone_number">
         </div>
         <div class="form-group">
             <label for="email">Электронная почта</label>
